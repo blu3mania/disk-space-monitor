@@ -1,0 +1,26 @@
+{
+    "disks": [
+        {
+           "path": "C:",
+           "threshold": "20G"
+        }
+    ],
+    "checkInterval": 300,
+    "notificationTypes": [
+        "email"
+    ],
+    "email": {
+        "format": "html",
+        "subject": "*Action Required* Low space warning: host {HOST}, disk {DISK}",
+        "body": "Hi,<br><br>Free space on disk {DISK} of {HOST} has dropped under {THRESHOLD}!<br><br>Total space: {TOTAL}<br>Free space: {FREE}<br>",
+        "from": "Disk Space Monitor <noreply@EmailAddressYouWantToUse.com>",
+        "to": "xxx@EmailAddressYouWantToNotify.com",
+        "cc": "",
+        "bcc": "",
+        "smtp": {
+            "host": "smtp.EmailHostYouWantToUse.com",
+            "port": 25,
+            "secure": false
+        }
+    }
+}
