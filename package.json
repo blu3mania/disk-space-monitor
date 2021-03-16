@@ -10,8 +10,9 @@
     "uninstall": "node src/uninstall-service.js"
   },
   "keywords": [
-    "disk space",
-    "disk monitor"
+    "disk-space",
+    "disk-monitor",
+    "disk-space-monitor"
   ],
   "author": "blu3mania <blu3mania@hotmail.com>",
   "license": "Apache-2.0",

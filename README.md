@@ -36,11 +36,7 @@ prefer you can use npm as well, just replace "yarn" with "npm" in any command.
      * Desktop notifications are shown to the user on desktop. For example, on Windows 10 it uses Windows
        Toast notification.
 
-       **Note 1**, this only works when running in standalone mode instead of as a system service.
-
-       **Note 2**, since the notifier uses Snoretoast for Windows Toast notification, a new app "Snoretoast"
-       will be registered on Start menu if using this feature on Windows, and all notifications will appear to
-       be from that app.
+       **Note**, this only works when running in standalone mode instead of as a system service.
    * email defines options for email notifications.
      * format is the email format. It can be either "html" or "text". "html" is the default value.
      * subject is the email subject. You can use these macros in the defined value:

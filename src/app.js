@@ -58,6 +58,7 @@
                     if (!calculateThresholdInBytes(disk, diskInfo)) {
                         return Promise.reject(`Invalid configuration "${disk.threshold}" for disk "${disk.path}".`);
                     }
+                    disk.notificationTriggered = false;
                     verbose(`Disk "${disk.path}" threshold "${disk.threshold}", which is ${disk.thresholdInBytes} bytes.`);
                 }
                 checkDiskFreeSpace(disk, diskInfo);
@@ -143,14 +144,19 @@
 
     function checkDiskFreeSpace(disk, diskInfo) {
         if (diskInfo.free < disk.thresholdInBytes) {
-            if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Email)) {
-                warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}! Sending email notification...', disk, diskInfo));
-                sendEmailNotification(disk, diskInfo);
+            if (!disk.notificationTriggered) {
+                disk.notificationTriggered = true;
+                if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Email)) {
+                    warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}! Sending email notification...', disk, diskInfo));
+                    sendEmailNotification(disk, diskInfo);
+                }
+                if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Desktop)) {
+                    warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}! Showing desktop notification...', disk, diskInfo));
+                    sendDesktopNotification(disk, diskInfo);
+                }
             }
-            if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Desktop)) {
-                warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}! Showing desktop notification...', disk, diskInfo));
-                sendDesktopNotification(disk, diskInfo);
-            }
+        } else {
+            disk.notificationTriggered = false;
         }
     }
 
@@ -193,6 +199,7 @@
         notifier.notify({
             title: 'Low disk space warning',
             message: replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}!', disk, diskInfo),
+            appID: 'Disk Space Monitor',
             icon: getImagePath('low-disk-space.png'),
         });
     }
