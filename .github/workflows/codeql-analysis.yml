@@ -1,34 +1,30 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    types: [ opened, synchronize ]
-    branches: [ main ]
+    types: [opened, synchronize, reopened]
+    branches: [main]
   schedule:
-    - cron: '16 5 23 * *'
+    - cron: '28 5 28 * *'
 
 jobs:
-  analyze:
-    name: Analyze
+  Analyze:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: javascript
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
