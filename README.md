@@ -1,7 +1,7 @@
 # Disk-Space-Monitor
-![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-yellow)
-![node.js 10+](https://img.shields.io/badge/node.js-10.16.3-blue?logo=node.js)
-![Latest Release](https://img.shields.io/github/v/release/blu3mania/disk-space-monitor)
+[![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-yellow)](https://raw.githubusercontent.com/blu3mania/disk-space-monitor/main/LICENSE)
+[![node.js 10+](https://img.shields.io/badge/node.js-10.16.3-blue?logo=node.js)](https://nodejs.org/en/)
+[![Latest Release](https://img.shields.io/github/v/release/blu3mania/disk-space-monitor)](https://github.com/blu3mania/disk-space-monitor/releases/latest)
 
 Monitor disk space usage and notify user by email or system notification.
 

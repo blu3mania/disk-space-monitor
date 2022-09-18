@@ -1,18 +1,18 @@
 {
   "name": "disk-space-monitor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Monitor disk space usage and notify user by email or system notification",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "preinstall": "npm install npm-platform-dependencies && npmpd",
-    "install": "node src/install-service.js",
+    "postinstall": "node src/install-service.js",
     "uninstall": "node src/uninstall-service.js"
   },
   "keywords": [
-    "disk-space",
-    "disk-monitor",
-    "disk-space-monitor"
+    "disk space",
+    "disk monitor",
+    "disk space monitor"
   ],
   "author": "blu3mania <blu3mania@hotmail.com>",
   "license": "Apache-2.0",
@@ -25,13 +25,13 @@
     "url": "https://github.com/blu3mania/disk-space-monitor.git"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
+    "chalk": "^4.1.2",
     "diskusage": "^1.1.3",
-    "node-notifier": "^9.0.0",
-    "nodemailer": "^6.4.17"
+    "node-notifier": "^10.0.1",
+    "nodemailer": "^6.7.8"
   },
   "win32Dependencies": {
-    "node-windows": "^1.0.0-beta.5"
+    "node-windows": "^1.0.0-beta.8"
   },
   "darwinDependencies": {
     "node-mac": "^1.0.0"
@@ -39,8 +39,5 @@
   "linuxDependencies": {
     "node-linux": "^0.1.12"
   },
-  "devDependencies": {},
-  "resolutions": {
-    "minimist": "^1.2.5"
-  }
+  "devDependencies": {}
 }
