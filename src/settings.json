@@ -1,4 +1,7 @@
 {
+    "service": {
+        "name": "Disk Space Monitor"
+    },
     "disks": [
         {
            "path": "C:",

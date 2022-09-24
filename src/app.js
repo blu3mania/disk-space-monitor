@@ -1,16 +1,17 @@
-'use strict';
+import os from 'os';
+import path from 'path';
+import url from 'url';
 
-const os = require('os');
-const path = require('path');
-const notifier = require('node-notifier');
-const diskusage = require('diskusage');
-const nodemailer = require('nodemailer');
-const {
+import diskusage from 'diskusage';
+import mailer from 'nodemailer';
+import notifier from 'node-notifier';
+
+import {
     error,
     warning,
     info,
-    verbose } = require('./print.js');
-const settings = require('./settings.json');
+    verbose } from './print.js';
+import settings from './settings.json' assert {type: 'json'};
 
 const NotificationType = {
     Email: 'email',
@@ -22,13 +23,19 @@ const EmailFormat = {
     Text: 'text',
 };
 
-const prefixes = [
+// Supported unit prefixes
+const UnitPrefix = [
     'k',
     'm',
     'g',
     't',
     'p',
+    'e',
+    'z',
+    'y',
 ];
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 let emailTransporter = null;
 
@@ -38,7 +45,7 @@ function main() {
     verbose('Starting...');
 
     if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Email)) {
-        emailTransporter = nodemailer.createTransport(settings.email.smtp);
+        emailTransporter = mailer.createTransport(settings.email.smtp);
     }
 
     checkDiskUsage();
@@ -58,7 +65,7 @@ function checkDiskUsage() {
                     return Promise.reject(`Invalid configuration "${disk.threshold}" for disk "${disk.path}".`);
                 }
                 disk.notificationTriggered = false;
-                verbose(`Disk "${disk.path}" threshold "${disk.threshold}", which is ${disk.thresholdInBytes} bytes.`);
+                verbose(`Disk "${disk.path}" threshold "${disk.threshold}", which is ${disk.thresholdInBytes.toLocaleString()} bytes.`);
             }
             checkDiskFreeSpace(disk, diskInfo);
         })
@@ -106,7 +113,7 @@ function calculateThresholdInBytes(disk, diskInfo) {
                 base = 1024;
                 prefixToCheck = disk.threshold.slice(-3, -2).toLowerCase();
             } else {
-                // SI prefix
+                // Decimal (SI) prefix
                 base = 1000;
             }
         } else {
@@ -115,7 +122,7 @@ function calculateThresholdInBytes(disk, diskInfo) {
         }
 
         if (prefixToCheck !== null) {
-            const exponent = prefixes.findIndex(prefix => prefix === prefixToCheck) + 1;
+            const exponent = UnitPrefix.findIndex(prefix => prefix === prefixToCheck) + 1;
             if (exponent === 0) {
                 invalidConfig = true;
             } else {
