@@ -11,7 +11,7 @@ import {
     warning,
     info,
     verbose } from './print.js';
-import settings from './settings.json' assert {type: 'json'};
+import settings from './settings.json' with {type: 'json'};
 
 const NotificationType = {
     Email: 'email',
@@ -152,12 +152,11 @@ function checkDiskFreeSpace(disk, diskInfo) {
     if (diskInfo.free < disk.thresholdInBytes) {
         if (!disk.notificationTriggered) {
             disk.notificationTriggered = true;
+            warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}!', disk, diskInfo));
             if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Email)) {
-                warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}! Sending email notification...', disk, diskInfo));
                 sendEmailNotification(disk, diskInfo);
             }
             if (settings.notificationTypes.find(type => type.toLowerCase() === NotificationType.Desktop)) {
-                warning(replaceMacro('Free space on disk {DISK} has dropped under {THRESHOLD}! Showing desktop notification...', disk, diskInfo));
                 sendDesktopNotification(disk, diskInfo);
             }
         }

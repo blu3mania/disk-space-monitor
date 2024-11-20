@@ -15,10 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest]
-        node: [10, 12, 14, 16, 18, 20]
-        exclude:
-          - os: macOS-latest
-            node: 16
+        node: [18, 20, 22]
 
     steps:
       - name: Checkout repository
