@@ -1,0 +1,70 @@
+name: Test on Code Change
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+env:
+  PACKAGE_MANAGER: "npm"
+
+jobs:
+  git-diff-check:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - name: Run git diff check
+        run: |
+          git config --global core.whitespace cr-at-eol,tab-in-indent
+          git diff --check HEAD^
+
+  test-linux-and-macOS:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        node: [18, 20, 22]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          show-progress: false
+
+      - name: Install required node.js version
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Test package installation
+        run: sudo npm install
+
+  test-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node: [18, 20, 22]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          show-progress: false
+
+      - name: Install required node.js version
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Test package installation
+        run: npm install
